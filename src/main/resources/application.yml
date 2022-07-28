@@ -1,76 +1,52 @@
 spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
   cloud:
-    function:
-      definition: user;topicLogger;article;comment;email
     stream:
+      sqs:
+        bindings:
+          user-input-0:
+            consumer:
+              snsFanout: false
+          email-input-0:
+            consumer:
+              snsFanout: false
+          article-input-0:
+            consumer:
+              snsFanout: false
+          comment-input-0:
+            consumer:
+              snsFanout: false
       bindings:
         user-out-0:
-          destination: user-out
-        user-in-0:
-          destination: user-out
-          group: "userAllEvents"
-        article-out-0:
-          destination: article-out
-        article-in-0:
-          destination: article-out
-          group: "articleAllEvents"
-        comment-out-0:
-          destination: comment-out
-        comment-in-0:
-          destination: comment-out
-          group: "commentAllEvents"
+          destination: user
+        user-input-0:
+          destination: user
         email-out-0:
-          destination: email-out
-        email-in-0:
-          destination: email-out
-          group: "emailToUser"
-        topicLogger-in-0:
-          destination: "user-out,comment-out,article-out"
-          group: "topicLogger"
-      rabbit:
+          destination: email
+        email-input-0:
+          destination: email
+        article-out-0:
+          destination: article
+        article-input-0:
+          destination: article
+        comment-out-0:
+          destination: comment
+        comment-input-0:
+          destination: comment
+      function:
         bindings:
-          user-out-0:
-            producer:
-              routing-key-expression: headers.routing_key
-          article-out-0:
-            producer:
-              routing-key-expression: headers.routing_key
-          comment-out-0:
-            producer:
-              routing-key-expression: headers.routing_key
-          email-out-0:
-            producer:
-              routing-key-expression: headers.routing_key
-              exchange-type: direct
-          user-in-0:
-            consumer:
-              binding-routing-key: "user.#"
-              queue-name-group-only: true
-              durable-subscription: false
-          article-in-0:
-            consumer:
-              binding-routing-key: "article.#"
-              queue-name-group-only: true
-              durable-subscription: false
-          comment-in-0:
-            consumer:
-              binding-routing-key: "comment.#"
-              queue-name-group-only: true
-              durable-subscription: false
-          email-in-0:
-            consumer:
-              binding-routing-key: "email"
-              queue-name-group-only: true
-              durable-subscription: false
-              exchange-type: direct
-          topicLogger-in-0:
-            consumer:
-              binding-routing-key: "#"
-              queue-name-group-only: true
-              durable-subscription: false
-
+          user-in-0: user-input-0
+          email-in-0: email-input-0
+          article-in-0: article-input-0
+          comment-in-0: comment-input-0
+        definition: user;email;article;comment
+cloud:
+  aws:
+    region:
+      static: "eu-central-1"
+    stack:
+      auto: false
+    credentials:
+      access-key: "mock_access_key"
+      secret-key: "mock_secret_key"
+    sqs:
+      endpoint: "http://127.0.0.1:4566"

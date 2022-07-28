@@ -1,5 +1,6 @@
 package pl.fissst.lbd.queues.services;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -9,7 +10,6 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import pl.fissst.lbd.queues.dto.ArticleDto;
 import pl.fissst.lbd.queues.util.BindingName;
-import pl.fissst.lbd.queues.util.EventType;
 
 import java.util.function.Consumer;
 
@@ -28,14 +28,14 @@ public class ArticleService {
     public void CreateArticle(ArticleDto articleDto){
         String s="Article created !!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.ARTICLE_CREATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s).build();
         streamBridge.send(BindingName.ARTICLE.getName(), message);
     }
 
     public void UpdateArticle(ArticleDto articleDto,Long id){
         String s="Article updated !!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.ARTICLE_UPDATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s).build();
         streamBridge.send(BindingName.ARTICLE.getName(), message);
     }
 

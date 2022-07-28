@@ -8,7 +8,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import pl.fissst.lbd.queues.util.BindingName;
-import pl.fissst.lbd.queues.util.EventType;
 
 import java.util.function.Consumer;
 
@@ -16,6 +15,7 @@ import java.util.function.Consumer;
 public class EmailService {
 
     private final Logger LOG = LoggerFactory.getLogger(EmailService.class);
+
     private final StreamBridge streamBridge;
 
 
@@ -23,18 +23,18 @@ public class EmailService {
         this.streamBridge = streamBridge;
     }
 
-
     public void SendEmailToUser(){
         String s="Email Sent!!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),"email").build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .build();
         streamBridge.send(BindingName.EMAIL.getName(), message);
     }
 
     @Bean
     public Consumer<Message<String>> email() {
         return value -> {
-            LOG.info("Email: "+value.getPayload().toString());
+            LOG.info(value.toString());
         };
     }
 
