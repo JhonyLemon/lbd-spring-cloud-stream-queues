@@ -14,7 +14,7 @@ public class LoggerService {
     private final Logger LOG = LoggerFactory.getLogger(LoggerService.class);
 
     @Bean
-    public Consumer<Message<String>> topicLogger() {
+    public Consumer<Message<String>> logger() {
         return value -> {
             LOG.info(value.toString());
         };
