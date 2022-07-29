@@ -27,7 +27,10 @@ public class EmailService {
     public void SendEmailToUser(){
         String s="Email Sent!!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),"email").build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),"email")
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.EMAIL.getName(), message);
     }
 

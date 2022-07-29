@@ -28,14 +28,20 @@ public class ArticleService {
     public void CreateArticle(ArticleDto articleDto){
         String s="Article created !!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.ARTICLE_CREATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),EventType.ARTICLE_CREATED.getEvent())
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.ARTICLE.getName(), message);
     }
 
     public void UpdateArticle(ArticleDto articleDto,Long id){
         String s="Article updated !!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.ARTICLE_UPDATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),EventType.ARTICLE_UPDATED.getEvent())
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.ARTICLE.getName(), message);
     }
 

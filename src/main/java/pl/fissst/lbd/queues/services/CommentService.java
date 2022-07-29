@@ -27,20 +27,29 @@ public class CommentService {
     public void CreateComment(CommentDto commentDto){
         String s="Comment Created!!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.COMMENT_CREATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),EventType.COMMENT_CREATED.getEvent())
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.COMMENT.getName(), message);
 
     }
     public void UpdateComment(CommentDto commentDto,Long id){
         String s="Comment Updated!!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.COMMENT_UPDATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),EventType.COMMENT_UPDATED.getEvent())
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.COMMENT.getName(), message);
     }
     public void DeleteComment(Long id){
         String s="Comment Deleted!!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.COMMENT_DELETED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),EventType.COMMENT_DELETED.getEvent())
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.COMMENT.getName(), message);
     }
 

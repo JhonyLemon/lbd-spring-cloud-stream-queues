@@ -28,7 +28,10 @@ public class UserService {
     public void CreateUser(UserDto userDto){
         String s="User created!!!";
         LOG.info(s);
-        Message<String> message = MessageBuilder.withPayload(s).setHeader(EventType.getHeader(),EventType.USER_CREATED.getEvent()).build();
+        Message<String> message = MessageBuilder.withPayload(s)
+                .setHeader(EventType.getHeader(),EventType.USER_CREATED.getEvent())
+                .setHeader("x-delay",5000)
+                .build();
         streamBridge.send(BindingName.USER.getName(), message);
     }
 
